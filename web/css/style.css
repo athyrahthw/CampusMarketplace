@@ -1,0 +1,814 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Marketplace</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Homepage Specific Styles -->
+    <style>
+        :root {
+            --primary-purple: #8a4fff;
+            --light-purple: #a982ff;
+            --pale-purple: #f0e6ff;
+            --dark-purple: #6b3fc1;
+            --accent-green: #4CAF50;
+            --light-bg: #f8f5ff;
+            --card-bg: #ffffff;
+            --text-dark: #2c3e50;
+            --text-light: #666;
+            --shadow-light: 0 4px 15px rgba(138, 79, 255, 0.1);
+            --shadow-medium: 0 8px 25px rgba(138, 79, 255, 0.15);
+            --shadow-heavy: 0 15px 40px rgba(138, 79, 255, 0.2);
+        }
+
+        /* ===== BASE STYLES ===== */
+        body {
+            background: linear-gradient(135deg, var(--light-bg) 0%, var(--pale-purple) 100%);
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== NAVIGATION ===== */
+        .homepage-nav {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow-light);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .nav-logo i {
+            font-size: 2rem;
+            color: var(--primary-purple);
+        }
+
+        .nav-logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-purple);
+            margin: 0;
+            background: linear-gradient(135deg, var(--primary-purple), var(--light-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-logo span {
+            color: var(--dark-purple);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-btn {
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .nav-btn-primary {
+            background: linear-gradient(135deg, var(--primary-purple), var(--light-purple));
+            color: white;
+            border: 2px solid transparent;
+        }
+
+        .nav-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .nav-btn-secondary {
+            background: white;
+            color: var(--primary-purple);
+            border: 2px solid var(--pale-purple);
+        }
+
+        .nav-btn-secondary:hover {
+            background: var(--pale-purple);
+            border-color: var(--light-purple);
+            transform: translateY(-2px);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero-section {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        @media (max-width: 992px) {
+            .hero-section {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-purple), var(--dark-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-purple);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .hero-image {
+            position: relative;
+        }
+
+        .hero-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: var(--shadow-heavy);
+            border: 2px solid var(--pale-purple);
+        }
+
+        /* ===== FEATURES SECTION ===== */
+        .features-section {
+            max-width: 1200px;
+            margin: 5rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-purple), var(--light-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            border: 2px solid var(--pale-purple);
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-heavy);
+            border-color: var(--light-purple);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-purple), var(--light-purple));
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--pale-purple), white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            border: 2px solid var(--pale-purple);
+        }
+
+        .feature-icon i {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--primary-purple), var(--light-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* ===== CTA SECTION ===== */
+        .cta-section {
+            max-width: 1200px;
+            margin: 5rem auto;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--primary-purple), var(--dark-purple));
+            border-radius: 20px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            opacity: 0.3;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-content h2 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .cta-content p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            border: 2px solid transparent;
+            min-width: 180px;
+        }
+
+        .cta-btn-primary {
+            background: white;
+            color: var(--primary-purple);
+        }
+
+        .cta-btn-primary:hover {
+            background: var(--pale-purple);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-btn-secondary {
+            background: transparent;
+            color: white;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .cta-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+            transform: translateY(-3px);
+        }
+
+        /* ===== HOW IT WORKS ===== */
+        .how-it-works {
+            max-width: 1200px;
+            margin: 5rem auto;
+            padding: 0 2rem;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--light-purple));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1.5rem;
+            border: 4px solid var(--pale-purple);
+        }
+
+        .step h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .step p {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* ===== FOOTER ===== */
+        .homepage-footer {
+            background: var(--dark-purple);
+            color: white;
+            margin-top: auto;
+            padding-top: 4rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-column p {
+            opacity: 0.8;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--primary-purple);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .cta-content h2 {
+                font-size: 2rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .cta-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .nav-actions {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .nav-btn {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-section {
+                padding: 0 1rem;
+            }
+            
+            .features-section,
+            .how-it-works,
+            .cta-section {
+                padding: 0 1rem;
+                margin: 3rem auto;
+            }
+            
+            .footer-container {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="homepage-nav">
+        <div class="nav-container">
+            <a href="index.jsp" class="nav-logo">
+                <i class="fas fa-store"></i>
+                <h1>Campus<span>Marketplace</span></h1>
+            </a>
+            
+            <div class="nav-actions">
+                <a href="login.jsp" class="nav-btn nav-btn-secondary">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Sign In
+                </a>
+                <a href="register.jsp" class="nav-btn nav-btn-primary">
+                    <i class="fas fa-user-plus"></i>
+                    Get Started
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== HERO SECTION ===== -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>Your Campus Trading Hub</h1>
+            <p>Buy, sell, and trade textbooks, electronics, furniture, and more with fellow students. A safe, student-only marketplace designed for your campus community.</p>
+            
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number">500+</span>
+                    <span class="stat-label">Active Students</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">$25K+</span>
+                    <span class="stat-label">Saved Monthly</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">98%</span>
+                    <span class="stat-label">Satisfaction Rate</span>
+                </div>
+            </div>
+            
+            <div class="cta-buttons">
+                <a href="register.jsp" class="cta-btn cta-btn-primary">
+                    <i class="fas fa-rocket"></i>
+                    Join Now - It's Free
+                </a>
+                <a href="#how-it-works" class="cta-btn cta-btn-secondary">
+                    <i class="fas fa-play-circle"></i>
+                    See How It Works
+                </a>
+            </div>
+        </div>
+        
+        <div class="hero-image">
+            <!-- Placeholder for hero image - you can replace with actual image -->
+            <div style="background: linear-gradient(135deg, var(--pale-purple), white); width: 100%; height: 400px; border-radius: 20px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-shopping-bag" style="font-size: 8rem; color: var(--light-purple); opacity: 0.3;"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FEATURES SECTION ===== -->
+    <section class="features-section">
+        <div class="section-header">
+            <h2>Why Choose Campus Marketplace?</h2>
+            <p>Experience the best platform for campus trading with these amazing features</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Campus Verified</h3>
+                <p>All users are verified campus members, ensuring a safe and trusted trading environment.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>Instant Listings</h3>
+                <p>List items in seconds with our simple interface. Upload photos, set prices, and start selling.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h3>Built-in Messaging</h3>
+                <p>Communicate securely with buyers and sellers through our integrated messaging system.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3>Smart Search</h3>
+                <p>Find exactly what you need with advanced filters and campus-specific categories.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3>Save Favorites</h3>
+                <p>Save items you love and get notified when prices drop or new similar items are listed.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Price Trends</h3>
+                <p>See historical price trends for items to make informed buying and selling decisions.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== HOW IT WORKS ===== -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="section-header">
+            <h2>How It Works</h2>
+            <p>Getting started with Campus Marketplace is easy and takes just a few minutes</p>
+        </div>
+        
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Create Account</h3>
+                <p>Sign up with your campus email. We verify you're a student to keep the community safe.</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Browse or List</h3>
+                <p>Find great deals from other students or list your own items for sale in just a few clicks.</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Connect & Chat</h3>
+                <p>Message sellers directly through our secure platform to ask questions or negotiate prices.</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3>Meet & Trade</h3>
+                <p>Arrange safe, on-campus meetups in designated trading spots to complete your transactions.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA SECTION ===== -->
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>Ready to Start Trading?</h2>
+            <p>Join thousands of students who are already saving money and making connections on Campus Marketplace.</p>
+            
+            <div class="cta-buttons">
+                <a href="register.jsp" class="cta-btn cta-btn-primary">
+                    <i class="fas fa-user-plus"></i>
+                    Create Free Account
+                </a>
+                <a href="login.jsp" class="cta-btn cta-btn-secondary">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Sign In to Your Account
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="homepage-footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3><i class="fas fa-store"></i> Campus Marketplace</h3>
+                    <p>Your trusted platform for buying, selling, and trading within your campus community. Designed for students, by students.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3><i class="fas fa-link"></i> Quick Links</h3>
+                    <div class="footer-links">
+                        <a href="index.jsp"><i class="fas fa-home"></i> Home</a>
+                        <a href="about.jsp"><i class="fas fa-info-circle"></i> About Us</a>
+                        <a href="contact.jsp"><i class="fas fa-envelope"></i> Contact</a>
+                        <a href="faq.jsp"><i class="fas fa-question-circle"></i> FAQ</a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3><i class="fas fa-cube"></i> Categories</h3>
+                    <div class="footer-links">
+                        <a href="#"><i class="fas fa-book"></i> Textbooks</a>
+                        <a href="#"><i class="fas fa-laptop"></i> Electronics</a>
+                        <a href="#"><i class="fas fa-tshirt"></i> Clothing</a>
+                        <a href="#"><i class="fas fa-couch"></i> Furniture</a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3><i class="fas fa-headset"></i> Support</h3>
+                    <div class="footer-links">
+                        <a href="mailto:support@campusmarket.edu"><i class="fas fa-envelope"></i> support@campusmarket.edu</a>
+                        <a href="tel:1234567890"><i class="fas fa-phone"></i> (123) 456-7890</a>
+                        <a href="#"><i class="fas fa-map-marker-alt"></i> Student Center, Room 205</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Campus Marketplace. All rights reserved. | Designed for Students, By Students</p>
+                <p>A student-run initiative promoting sustainability through reuse and exchange.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple animation for step numbers
+        document.addEventListener('DOMContentLoaded', function() {
+            const stepNumbers = document.querySelectorAll('.step-number');
+            
+            stepNumbers.forEach((number, index) => {
+                // Add animation delay
+                number.style.animationDelay = `${index * 0.2}s`;
+            });
+            
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

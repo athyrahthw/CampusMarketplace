@@ -86,8 +86,7 @@
                     <input type="hidden" name="redirect" value="<%= redirectParam %>">
                     
                     <div class="form-group floating-label">
-                        <input type="text" id="username" name="username" required 
-                               placeholder="Enter your username" autocomplete="username">
+                        <input type="text" id="username" name="username" required autocomplete="username">
                         <label for="username">
                             <i class="fas fa-user"></i>
                             Username
@@ -96,8 +95,7 @@
                     </div>
                     
                     <div class="form-group floating-label">
-                        <input type="password" id="password" name="password" required 
-                               placeholder="Enter your password" autocomplete="current-password">
+                        <input type="password" id="password" name="password" required autocomplete="current-password">
                         <label for="password">
                             <i class="fas fa-lock"></i>
                             Password
@@ -147,52 +145,84 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const togglePassword = document.getElementById('togglePassword');
-            const passwordInput = document.getElementById('password');
-            const loginForm = document.getElementById('loginForm');
+    document.addEventListener('DOMContentLoaded', function() {
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        const loginForm = document.getElementById('loginForm');
+        
+        // Get input elements
+        const usernameInput = document.getElementById('username');
+        const passwordField = document.getElementById('password');
 
-            // Password visibility toggle
-            if (togglePassword && passwordInput) {
-                togglePassword.addEventListener('click', function() {
-                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                    passwordInput.setAttribute('type', type);
-                    this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
-                });
-            }
-
-            // Floating label animation
-            document.querySelectorAll('.floating-label input').forEach(input => {
-                input.addEventListener('focus', function() {
-                    this.parentElement.classList.add('focused');
-                });
-                
-                input.addEventListener('blur', function() {
-                    if (!this.value) {
-                        this.parentElement.classList.remove('focused');
-                    }
-                });
+        // Password visibility toggle
+        if (togglePassword && passwordInput) {
+            togglePassword.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
             });
+        }
 
-            // Form submission animation
-            if (loginForm) {
-                loginForm.addEventListener('submit', function(e) {
-                    const submitBtn = this.querySelector('.btn-login');
-                    if (submitBtn) {
-                        submitBtn.classList.add('loading');
-                        submitBtn.disabled = true;
-                        const btnText = submitBtn.querySelector('.btn-text');
-                        if (btnText) {
-                            btnText.textContent = 'Signing in...';
-                        }
-                    }
-                });
+        // Floating label animation
+        function updateLabelState(input) {
+            const parent = input.parentElement;
+            if (input.value || document.activeElement === input) {
+                parent.classList.add('focused');
+            } else {
+                parent.classList.remove('focused');
             }
+        }
+        
+        // Initialize all floating labels
+        document.querySelectorAll('.floating-label input').forEach(input => {
+            // Set initial state
+            updateLabelState(input);
             
-            // Clear any pre-filled values
-            document.getElementById('username').value = '';
-            document.getElementById('password').value = '';
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+            
+            input.addEventListener('blur', function() {
+                updateLabelState(this);
+            });
+            
+            input.addEventListener('input', function() {
+                updateLabelState(this);
+            });
         });
-    </script>
+
+        // Form submission animation
+        if (loginForm) {
+            loginForm.addEventListener('submit', function(e) {
+                const submitBtn = this.querySelector('.btn-login');
+                if (submitBtn) {
+                    submitBtn.classList.add('loading');
+                    submitBtn.disabled = true;
+                    const btnText = submitBtn.querySelector('.btn-text');
+                    if (btnText) {
+                        btnText.textContent = 'Signing in...';
+                    }
+                }
+            });
+        }
+        
+        // Clear any pre-filled values and reset labels
+        function clearForm() {
+            // Clear values
+            usernameInput.value = '';
+            passwordField.value = '';
+            
+            // Reset label states
+            updateLabelState(usernameInput);
+            updateLabelState(passwordField);
+        }
+        
+        // Clear immediately
+        clearForm();
+        
+        // Clear again after a short delay to handle browser auto-fill
+        setTimeout(clearForm, 100);
+    });
+</script>
 </body>
 </html>

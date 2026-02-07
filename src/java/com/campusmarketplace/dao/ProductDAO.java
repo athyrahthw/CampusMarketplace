@@ -17,7 +17,8 @@ public class ProductDAO {
     
     public List<Product> getAllProducts() {
         List<Product> products = new ArrayList<>();
-        String sql = "SELECT * FROM products WHERE is_available = true ORDER BY created_at DESC";
+        // FIXED: Changed 'true' to '1' for Derby compatibility
+        String sql = "SELECT * FROM products WHERE is_available = 1 ORDER BY created_at DESC";
         
         System.out.println("Executing SQL: " + sql);
         
@@ -67,7 +68,8 @@ public class ProductDAO {
     
     public List<Product> getProductsByCategory(String category) {
         List<Product> products = new ArrayList<>();
-        String sql = "SELECT * FROM products WHERE category = ? AND is_available = true ORDER BY created_at DESC";
+        // FIXED: Changed 'true' to '1' for Derby compatibility
+        String sql = "SELECT * FROM products WHERE category = ? AND is_available = 1 ORDER BY created_at DESC";
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -106,7 +108,9 @@ public class ProductDAO {
             stmt.setString(8, product.getPaymentOption());
             stmt.setString(9, product.getProductCondition());
             stmt.setInt(10, product.getQuantity());
-            stmt.setBoolean(11, product.isAvailable());
+            
+            // FIXED: Convert boolean to int for Derby
+            stmt.setInt(11, product.isAvailable() ? 1 : 0);
             
             int rowsAffected = stmt.executeUpdate();
             System.out.println("Rows affected: " + rowsAffected);
@@ -145,7 +149,10 @@ public class ProductDAO {
         product.setPaymentOption(rs.getString("payment_option"));
         product.setProductCondition(rs.getString("product_condition"));
         product.setQuantity(rs.getInt("quantity"));
-        product.setAvailable(rs.getBoolean("is_available"));
+        
+        // FIXED: Handle Derby's SMALLINT boolean (1=true, 0=false)
+        int availableInt = rs.getInt("is_available");
+        product.setAvailable(availableInt == 1);
         
         // Handle timestamp (might be null)
         Timestamp createdAt = rs.getTimestamp("created_at");
